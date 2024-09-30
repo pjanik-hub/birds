@@ -1,11 +1,11 @@
 pub mod bird;
 pub mod movement;
 
-use bevy::prelude::*;
 #[cfg(not(target_arch = "wasm32"))]
 use bevy::sprite::{Wireframe2dConfig, Wireframe2dPlugin};
-use bird::BirdPlugin;
-use movement::MovementPlugin;
+use bevy::{ecs::query, prelude::*};
+use bird::{Bird, BirdPlugin};
+use movement::{MovementPlugin, Velocity};
 
 fn main() {
     let mut app = App::new();
@@ -36,15 +36,22 @@ fn setup(mut commands: Commands) {
     );
 }
 
-#[cfg(not(target_arch = "wasm32"))]
 fn handle_keypress(
-    mut wireframe_config: ResMut<Wireframe2dConfig>,
+    #[cfg(not(target_arch = "wasm32"))] mut wireframe_config: ResMut<Wireframe2dConfig>,
     keyboard: Res<ButtonInput<KeyCode>>,
+    mut query: Query<&mut Velocity, With<Bird>>,
 ) {
+    #[cfg(not(target_arch = "wasm32"))]
     if keyboard.just_pressed(KeyCode::Space) {
         wireframe_config.global = !wireframe_config.global;
     }
     if keyboard.just_pressed(KeyCode::Escape) {
         std::process::exit(0);
+    }
+    if keyboard.just_pressed(KeyCode::ArrowUp) {
+        for mut velocity in query.iter_mut() {
+            velocity.value.x += 50.0;
+            velocity.value.y += 50.0;
+        }
     }
 }

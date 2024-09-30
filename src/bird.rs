@@ -17,7 +17,7 @@ impl Plugin for BirdPlugin {
 
 const RADIUS: f32 = 50.0;
 const STARTING_POS: Vec3 = Vec3::new(0.0, 0.0, 0.0);
-const STARTING_VEL: Vec3 = Vec3::new(100.0, 0.0, 0.0);
+const STARTING_VEL: Vec3 = Vec3::new(200.0, 50.0, 0.0);
 const STARTING_COLOR: Color = Color::srgb(0.7, 0.7, 0.7);
 
 fn spawn_bird(
